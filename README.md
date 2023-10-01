@@ -1,11 +1,12 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Rust](https://github.com/pascal-chenevas/carbone_sdk_rs/actions/workflows/rust.yml/badge.svg)](https://github.com/pascal-chenevas/carbone_sdk_rs/actions/workflows/rust.yml)
-[![codecov](https://codecov.io/gh/pascal-chenevas/carbone_sdk_rs/branch/main/graph/badge.svg?token=7CU8EC2EPY)](https://codecov.io/gh/pascal-chenevas/carbone_sdk_rs)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Rust](https://github.com/carboneio/carbone-sdk-rust/actions/workflows/rust.yml/badge.svg)](https://github.com/carboneio/carbone-sdk-rust/actions/workflows/rust.yml)
 [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
+[![codecov](https://codecov.io/gh/pascal-chenevas/carbone_sdk_rs/branch/main/graph/badge.svg?token=7CU8EC2EPY)](https://codecov.io/gh/pascal-chenevas/carbone_sdk_rs)
 
-# carbone_sdk_rs
 
-carbone_sdk_rs is a Library that supplies functionalities to communicate with the [Carbone API](https://carbone.io/api-reference.html).
+# Carbone-sdk-rust
+
+Carbone-sdk-rust is a Library that supplies functionalities to communicate with the [Carbone API](https://carbone.io/api-reference.html).
 
 # State of development
 
@@ -82,3 +83,8 @@ async fn main() -> Result<(), CarboneError> {
 ## Useful links
 
 - [How to build a template file](https://carbone.io/documentation.html#building-a-template)
+
+
+# Contributor
+
+Author: https://github.com/pascal-chenevas

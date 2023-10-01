@@ -1,11 +1,13 @@
 [package]
-name = "carbone_sdk_rs"
+name = "carbone-sdk-rust"
 version = "0.1.0"
 edition = "2021"
 authors = ["Pascal Chenevas-Paule <pcp.dev@posteo.de>"]
-description = "A library to communicate with the Carbone API (http://carbone.io)"
+description = "Generate PDF, DOCX, XLSX, ..., HTML reports from templates and JSON data with Carbone API"
+homepage = "https://carbone.io"
+repository = "https://github.com/carboneio/carbone-sdk-rust"
 readme = "README.md"
-license = "MIT"
+license = "Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
