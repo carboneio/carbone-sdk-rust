@@ -3,11 +3,11 @@ use std::fs;
 use httpmock::prelude::*;
 use serde_json::json;
 
-use carbone_sdk_rs::blocking::Carbone;
-use carbone_sdk_rs::carbone_response::*;
-use carbone_sdk_rs::errors::CarboneError;
-use carbone_sdk_rs::render::*;
-use carbone_sdk_rs::types::JsonData;
+use carbone_sdk_rust::blocking::Carbone;
+use carbone_sdk_rust::carbone_response::*;
+use carbone_sdk_rust::errors::CarboneError;
+use carbone_sdk_rust::render::*;
+use carbone_sdk_rust::types::JsonData;
 
 mod helper;
 
@@ -16,7 +16,7 @@ use helper::Helper;
 #[cfg(test)]
 mod tests {
 
-    use carbone_sdk_rs::{config::Config, template::*, types::ApiVersion};
+    use carbone_sdk_rust::{config::Config, template::*, types::ApiVersion};
 
     use super::*;
 
