@@ -1,5 +1,5 @@
-use carbone_sdk_rs::errors::CarboneError;
-use carbone_sdk_rs::render::*;
+use carbone_sdk_rust::errors::CarboneError;
+use carbone_sdk_rust::render::*;
 
 #[cfg(test)]
 mod tests {

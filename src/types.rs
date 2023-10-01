@@ -75,8 +75,8 @@ impl JsonData {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::types::JsonData;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::types::JsonData;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///

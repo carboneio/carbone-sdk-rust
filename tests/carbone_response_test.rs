@@ -1,11 +1,10 @@
 #[cfg(test)]
 mod tests {
 
-    use carbone_sdk_rs::carbone_response::{APIResponse, APIResponseData};
-    use carbone_sdk_rs::errors::CarboneError;
-    use carbone_sdk_rs::render::RenderId;
-    use carbone_sdk_rs::template::TemplateId;
-    use serde_json;
+    use carbone_sdk_rust::carbone_response::{APIResponse, APIResponseData};
+    use carbone_sdk_rust::errors::CarboneError;
+    use carbone_sdk_rust::render::RenderId;
+    use carbone_sdk_rust::template::TemplateId;
 
     #[test]
     fn test_deserialize_response_succeed() -> Result<(), CarboneError> {

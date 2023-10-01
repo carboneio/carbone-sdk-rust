@@ -1,13 +1,13 @@
-use carbone_sdk_rs::config::Config;
-use carbone_sdk_rs::errors::CarboneError;
-use carbone_sdk_rs::types::ApiVersion;
+use carbone_sdk_rust::config::Config;
+use carbone_sdk_rust::errors::CarboneError;
+use carbone_sdk_rust::types::ApiVersion;
 
 #[cfg(test)]
 mod tests {
 
     use super::*;
-    use carbone_sdk_rs::config::CARBONE_API_URL;
-    use carbone_sdk_rs::config::CARBONE_API_VERSION;
+    use carbone_sdk_rust::config::CARBONE_API_URL;
+    use carbone_sdk_rust::config::CARBONE_API_VERSION;
     use std::str::FromStr;
 
     #[test]

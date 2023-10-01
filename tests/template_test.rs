@@ -1,14 +1,14 @@
 use std::fs;
 
-use carbone_sdk_rs::errors::CarboneError;
-use carbone_sdk_rs::template::*;
+use carbone_sdk_rust::errors::CarboneError;
+use carbone_sdk_rust::template::*;
 
 #[cfg(test)]
 mod tests {
 
     use super::*;
     use anyhow::Result;
-    use carbone_sdk_rs::template::TemplateId;
+    use carbone_sdk_rust::template::TemplateId;
 
     #[test]
     fn test_template_file() -> Result<(), CarboneError> {

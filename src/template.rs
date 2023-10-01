@@ -67,8 +67,8 @@ impl TemplateId {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::template::TemplateId;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::template::TemplateId;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
@@ -85,7 +85,6 @@ impl TemplateId {
     }
 
     pub fn from_bytes(data: Vec<u8>, payload: Option<&str>) -> Result<Self> {
-
         let mut sha256 = Sha256::new();
 
         let payload = payload.unwrap_or("");
@@ -97,7 +96,6 @@ impl TemplateId {
         let result: String = format!("{:X}", sha256.finalize());
 
         Self::new(result.to_lowercase())
-
     }
 }
 

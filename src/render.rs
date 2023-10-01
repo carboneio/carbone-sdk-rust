@@ -17,8 +17,8 @@ impl RenderId {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::render::RenderId;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::render::RenderId;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    

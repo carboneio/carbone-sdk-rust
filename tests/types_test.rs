@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
 
-    use carbone_sdk_rs::errors::CarboneError;
-    use carbone_sdk_rs::types::*;
+    use carbone_sdk_rust::errors::CarboneError;
+    use carbone_sdk_rust::types::*;
     use std::matches;
 
     use anyhow::Result;
@@ -113,5 +113,4 @@ mod tests {
 
         Ok(())
     }
-
 }

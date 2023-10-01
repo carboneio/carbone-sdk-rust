@@ -30,9 +30,9 @@ impl Config {
     ///
     /// ```no_run
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::errors::CarboneError;
-    /// use carbone_sdk_rs::types::ApiVersion;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::errors::CarboneError;
+    /// use carbone_sdk_rust::types::ApiVersion;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///     let api_version: ApiVersion = ApiVersion::new("4".to_string())?;
@@ -63,8 +63,8 @@ impl Config {
     ///
     /// ```no_run
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///     let config = Config::from_file("tests/config.test.json")?;
@@ -89,8 +89,8 @@ impl Config {
 ///
 /// ```no_run
 ///
-/// use carbone_sdk_rs::config::Config;
-/// use carbone_sdk_rs::errors::CarboneError;
+/// use carbone_sdk_rust::config::Config;
+/// use carbone_sdk_rust::errors::CarboneError;
 ///
 /// fn main() -> Result<(), CarboneError> {
 ///
@@ -121,8 +121,8 @@ impl Default for Config {
 /// ```no_run
 ///
 /// use std::str::FromStr;
-/// use carbone_sdk_rs::config::Config;
-/// use carbone_sdk_rs::errors::CarboneError;
+/// use carbone_sdk_rust::config::Config;
+/// use carbone_sdk_rust::errors::CarboneError;
 ///
 /// fn main() -> Result<(), CarboneError> {
 ///     

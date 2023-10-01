@@ -58,11 +58,11 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::types::ApiJsonToken;
-    /// use carbone_sdk_rs::template::TemplateId;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::types::ApiJsonToken;
+    /// use carbone_sdk_rust::template::TemplateId;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
@@ -112,11 +112,11 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::types::ApiJsonToken;
-    /// use carbone_sdk_rs::template::TemplateId;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::types::ApiJsonToken;
+    /// use carbone_sdk_rust::template::TemplateId;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
@@ -167,13 +167,13 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::render::*;
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::types::{ApiJsonToken, JsonData};
-    /// use carbone_sdk_rs::template::{TemplateFile,TemplateId};
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::render::*;
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::types::{ApiJsonToken, JsonData};
+    /// use carbone_sdk_rust::template::{TemplateFile,TemplateId};
     ///
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
@@ -212,7 +212,6 @@ impl<'a> Carbone<'a> {
         json_data: JsonData,
         payload: Option<&str>,
     ) -> Result<Bytes> {
-        
         let template_id_generated = template_file.generate_id(payload)?;
 
         let result = self.download_template(&template_id_generated);
@@ -237,11 +236,11 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::render::RenderId;
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::types::ApiJsonToken;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::render::RenderId;
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::types::ApiJsonToken;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
@@ -290,13 +289,13 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::render::*;
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::types::{ApiJsonToken, JsonData};
-    /// use carbone_sdk_rs::template::TemplateId;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::render::*;
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::types::{ApiJsonToken, JsonData};
+    /// use carbone_sdk_rust::template::TemplateId;
     ///
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
@@ -347,11 +346,11 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::template::TemplateId;
-    /// use carbone_sdk_rs::errors::CarboneError;
-    /// use carbone_sdk_rs::types::{ApiJsonToken, JsonData};
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::template::TemplateId;
+    /// use carbone_sdk_rust::errors::CarboneError;
+    /// use carbone_sdk_rust::types::{ApiJsonToken, JsonData};
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///
@@ -416,11 +415,11 @@ impl<'a> Carbone<'a> {
     /// ```no_run
     /// use std::env;
     ///
-    /// use carbone_sdk_rs::config::Config;
-    /// use carbone_sdk_rs::blocking::Carbone;
-    /// use carbone_sdk_rs::types::ApiJsonToken;
-    /// use carbone_sdk_rs::template::TemplateFile;
-    /// use carbone_sdk_rs::errors::CarboneError;
+    /// use carbone_sdk_rust::config::Config;
+    /// use carbone_sdk_rust::blocking::Carbone;
+    /// use carbone_sdk_rust::types::ApiJsonToken;
+    /// use carbone_sdk_rust::template::TemplateFile;
+    /// use carbone_sdk_rust::errors::CarboneError;
     ///
     /// fn main() -> Result<(), CarboneError> {
     ///    
