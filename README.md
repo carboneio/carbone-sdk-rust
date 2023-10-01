@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Rust](https://github.com/carboneio/carbone-sdk-rust/actions/workflows/rust.yml/badge.svg)](https://github.com/carboneio/carbone-sdk-rust/actions/workflows/rust.yml)
 [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
-[![codecov](https://codecov.io/gh/pascal-chenevas/carbone_sdk_rs/branch/main/graph/badge.svg?token=7CU8EC2EPY)](https://codecov.io/gh/pascal-chenevas/carbone_sdk_rs)
+
 
 
 # Carbone-sdk-rust
