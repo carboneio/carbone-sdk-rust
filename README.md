@@ -35,12 +35,12 @@ TODO
 ```rust
 use std::env;
  
-use carbone_sdk_rs::config::Config;
-use carbone_sdk_rs::carbone::Carbone;
-use carbone_sdk_rs::types::{ApiJsonToken, JsonData};
-use carbone_sdk_rs::template::TemplateId;
+use carbone_sdk_rust::config::Config;
+use carbone_sdk_rust::carbone::Carbone;
+use carbone_sdk_rust::types::{ApiJsonToken, JsonData};
+use carbone_sdk_rust::template::TemplateId;
  
-use carbone_sdk_rs::errors::CarboneError;
+use carbone_sdk_rust::errors::CarboneError;
 
 #[tokio::main]
 async fn main() -> Result<(), CarboneError> {
