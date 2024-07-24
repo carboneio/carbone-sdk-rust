@@ -10,6 +10,7 @@ use reqwest::Client;
 use reqwest::ClientBuilder;
 use reqwest::StatusCode;
 
+
 use crate::carbone_response::APIResponse;
 use crate::config::Config;
 use crate::errors::*;
@@ -18,6 +19,7 @@ use crate::template::*;
 use crate::types::{ApiJsonToken, JsonData};
 
 use crate::types::Result;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct Carbone<'a> {
@@ -210,20 +212,38 @@ impl<'a> Carbone<'a> {
     ) -> Result<Bytes> {
 
         let template_id_generated = TemplateId::from_bytes(template_data.to_owned(), payload)?;
-
-        let result = self.download_template(&template_id_generated).await;
-
-        let template_id = if result.is_err() {
-            self.upload_template(template_name.as_str(), template_data, salt).await?
-        } else {
-            template_id_generated
+        let mut template_id = template_id_generated;
+        let mut render_id = None;
+    
+        match self.render_data(template_id, json_data.clone()).await {
+            Ok(id) => {
+                render_id = Some(id);
+            }
+            Err(e) => match e {
+                CarboneError::HttpError { status_code, error_message } => {
+                    println!("{:?}", status_code);
+                    if status_code == reqwest::StatusCode::NOT_FOUND {
+                        println!("rrrr");
+                        template_id = self.upload_template(template_name.as_str(), template_data, salt).await?;
+                        render_id = Some(self.render_data(template_id, json_data).await?);
+                    } else {
+                        return Err(CarboneError::HttpError { status_code, error_message });
+                    }
+                },
+                CarboneError::Error(error_message) => {
+                    return Err(CarboneError::Error(error_message));
+                },
+                _ => {
+                    return Err(e);
+                }
+            },
         };
-
-        let render_id = self.render_data(template_id, json_data).await?;
-        let report_content = self.get_report(&render_id).await?;
-
+    
+        let report_content = self.get_report(&render_id.unwrap()).await?;
+    
         Ok(report_content)
     }
+
 
     /// Get a new report.
     ///
@@ -265,6 +285,22 @@ impl<'a> Carbone<'a> {
         let url = format!("{}/render/{}", self.config.api_url, render_id.as_str());
 
         let response = self.http_client.get(url).send().await?;
+
+        // let mut report_name = None;
+
+        // if let Some(content_disposition) = response.headers().get("content-disposition") {
+        //     if let Ok(disposition) = content_disposition.to_str() {
+        //         let split_content_disposition: Vec<&str> = disposition.split('=').collect();
+
+        //         if split_content_disposition.len() == 2 {
+        //             let mut name = split_content_disposition[1].to_string();
+        //             if name.starts_with('"') && name.ends_with('"') {
+        //                 name = name[1..name.len() - 1].to_string();
+        //             }
+        //             report_name = Some(name);
+        //         }
+        //     }
+        // }
 
         if response.status() == StatusCode::OK {
             Ok(response.bytes().await?)
@@ -393,6 +429,15 @@ impl<'a> Carbone<'a> {
             .body(json_data.as_str().to_owned())
             .send()
             .await?;
+
+        if !response.status().is_success() {
+            let status_code = response.status();
+            let json = response.json::<APIResponse>().await?;
+            return Err(CarboneError::HttpError {
+                status_code,
+                error_message: json.error.unwrap_or_else(|| "Unknown error".to_string()),
+            });
+        }
 
         let json = response.json::<APIResponse>().await?;
 

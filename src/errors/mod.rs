@@ -29,6 +29,11 @@ pub enum CarboneError {
     RequestBodyNotWellFormedJsonError,
     #[error("Carbone SDK {0:?} ParseError {1:?}")]
     ParseError(String, String),
+    #[error("Carbone SDK HttpError: {status_code:?} - {error_message}")]
+    HttpError {
+        status_code: reqwest::StatusCode,
+        error_message: String,
+    },
 }
 
 impl From<anyhow::Error> for CarboneError {

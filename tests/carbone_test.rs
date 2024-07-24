@@ -8,7 +8,7 @@ use carbone_sdk_rust::carbone_response::APIResponse;
 use carbone_sdk_rust::errors::CarboneError;
 use carbone_sdk_rust::render::*;
 use carbone_sdk_rust::types::JsonData;
-
+use reqwest::StatusCode;
 mod helper;
 
 use helper::Helper;
@@ -309,12 +309,6 @@ mod tests {
 
         let expected_content = fs::read(file_path)?;
 
-        let mock_template_response = server.mock(|when, then| {
-            when.method("GET")
-                .path(format!("/template/{}", template_id.as_str()));
-            then.status(200).body_from_file(template_file.path_as_str());
-        });
-
         let mock_render_response = server.mock(|when, then| {
             when.method("POST")
                 .path(format!("/render/{}", template_id.as_str()));
@@ -338,7 +332,103 @@ mod tests {
             .await
             .unwrap();
 
-        mock_template_response.assert();
+        mock_render_response.assert();
+        mock_get_report_response.assert();
+
+        assert_eq!(result, expected_content);
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_generate_report_unupload_template() -> Result<(), CarboneError>
+    {
+        // Start a lightweight mock server.
+        let server = MockServer::start();
+
+        let helper = Helper::new();
+
+        let config = helper.create_config_for_mock_server(Some(&server))?;
+        let api_token = helper.create_api_token()?;
+
+        let carbone = Carbone::new(&config, &api_token)?;
+
+        let report_data = fs::read_to_string("tests/data/report_data.json")?;
+
+        let template_name = "template2.odt".to_string();
+        let template_path = format!("tests/data/{}", template_name);
+        let template_data = fs::read(template_path.to_owned())?;
+
+        let template_file = TemplateFile::new(template_path, Some(template_data.to_owned()))?;
+        let template_id = template_file.generate_id(None)?;
+
+        let template_id_expected = TemplateId::new(
+            "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114".to_string(),
+        )?;
+
+        let data = APIResponseData {
+            template_id: Some(template_id_expected.clone()),
+            render_id: None,
+            template_file_extension: None,
+        };
+
+        let body = APIResponse {
+            success: true,
+            data: Some(data),
+            error: None,
+            code: None,
+        };
+
+        let json_data = JsonData::new(report_data)?;
+
+        let render_id_value = "MTAuMjAuMjEuNDAgICAgBY4OM11wQg11ekv6_R0n0wcmVwb3J0.pdf".to_string();
+        let render_id = &RenderId::new(&render_id_value)?;
+
+        let file_path = "tests/data/report.pdf";
+
+        let expected_content = fs::read(file_path)?;
+
+        let mock_render_response_false = server.mock(|when, then| {
+            when.method("POST")
+                .path(format!("/render/{}", template_id.as_str()));
+            then.status(404)
+            .json_body(json!({
+                "success": false,
+                "error": "template no found"
+            }));
+        });
+
+        let mock_upload_template = server.mock(|when, then| {
+            when.method("POST")
+                .path(format!("/template"));
+            then.status(200)
+                .header("content-type", "application/json")
+                .json_body_obj(&body);
+        });
+
+        let mock_render_response = server.mock(|when, then| {
+            when.method("POST")
+                .path(format!("/render/{}", template_id_expected.as_str()));
+            then.status(200).json_body(json!({
+                "success": true,
+                "data": {
+                    "renderId": render_id.as_str(),
+                    "inputFileExtension": "odt"
+                }
+            }));
+        });
+
+        let mock_get_report_response = server.mock(|when, then| {
+            when.method("GET")
+                .path(format!("/render/{}", render_id.as_str()));
+            then.status(200).body(&expected_content);
+        });
+
+        let result = carbone
+            .generate_report(template_name, template_data, json_data, None, None)
+            .await
+            .unwrap();
+
         mock_render_response.assert();
         mock_get_report_response.assert();
 
@@ -481,9 +571,10 @@ mod tests {
         let json_data = JsonData::new(json_data)?;
         let result = carbone.render_data(template_id, json_data).await;
 
-        let expected_error = CarboneError::Error(
-            "Invalid or undefined TemplateId or RenderId in the URL".to_string(),
-        );
+        let expected_error = CarboneError::HttpError {
+            status_code: StatusCode::BAD_REQUEST,
+            error_message: "Invalid or undefined TemplateId or RenderId in the URL".to_string(),
+        };
 
         mock_server.assert();
         assert!(result.is_err());
