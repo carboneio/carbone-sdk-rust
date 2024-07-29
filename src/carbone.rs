@@ -9,6 +9,7 @@ use reqwest::multipart;
 use reqwest::Client;
 use reqwest::ClientBuilder;
 use reqwest::StatusCode;
+use reqwest::Response;
 
 
 use crate::carbone_response::APIResponse;
@@ -221,9 +222,7 @@ impl<'a> Carbone<'a> {
             }
             Err(e) => match e {
                 CarboneError::HttpError { status_code, error_message } => {
-                    println!("{:?}", status_code);
                     if status_code == reqwest::StatusCode::NOT_FOUND {
-                        println!("rrrr");
                         template_id = self.upload_template(template_name.as_str(), template_data, salt).await?;
                         render_id = Some(self.render_data(template_id, json_data).await?);
                     } else {
@@ -236,7 +235,7 @@ impl<'a> Carbone<'a> {
                 _ => {
                     return Err(e);
                 }
-            },
+            }
         };
     
         let report_content = self.get_report(&render_id.unwrap()).await?;
@@ -509,7 +508,6 @@ impl<'a> Carbone<'a> {
             None => return Err(CarboneError::Error("Failed to fetch file name".to_string())),
         };
 
-        println!("file_name = {}", file_name);
 
         let ext = file_path
             .extension()
@@ -524,8 +522,6 @@ impl<'a> Carbone<'a> {
 
         let url = format!("{}/template", self.config.api_url);
 
-        println!("url = {}", url);
-        println!("form = {:?}", form);
 
         let response = self.http_client.post(url).multipart(form).send().await?;
 
@@ -534,6 +530,23 @@ impl<'a> Carbone<'a> {
         if json.success {
             Ok(json.data.unwrap().template_id.unwrap())
         } else {
+            Err(CarboneError::Error(json.error.unwrap()))
+        }
+    }
+
+
+    pub async fn get_status(&self) -> Result<String>
+    {
+        let url = format!("{}/status", self.config.api_url);
+
+        let response = self.http_client.get(url).send().await?;
+        println!("{:?}",response.headers());
+
+        if response.status() == StatusCode::OK {
+            let body = response.text().await?;
+            Ok(body)
+        } else {
+            let json = response.json::<APIResponse>().await?;
             Err(CarboneError::Error(json.error.unwrap()))
         }
     }

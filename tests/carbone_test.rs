@@ -762,4 +762,31 @@ mod tests {
 
         Ok(())
     }
+
+    #[tokio::test]
+    async fn test_get_status() -> Result<(), CarboneError> {
+        let body : String = "{\"success\":true,\"code\":200,\"message\":\"OK\",\"version\":\"4.22.11\"}".to_string();
+        let server = MockServer::start();
+
+        // Create a mock on the server.
+        let mock_server = server.mock(|when, then| {
+            when.method("GET")
+                .path(format!("/status"));
+            then.status(200).body(body.clone());
+        });
+
+        let helper = Helper::new();
+        let config = helper.create_config_for_mock_server(Some(&server))?;
+
+        let api_token = helper.create_api_token()?;
+
+        let carbone = Carbone::new(&config, &api_token)?;
+
+        let response = carbone.get_status().await.unwrap();
+
+        mock_server.assert();
+
+        assert_eq!(body, response);
+        Ok(())
+    }
 }
