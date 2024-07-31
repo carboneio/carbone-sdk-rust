@@ -23,27 +23,7 @@ pub struct Config {
 
 impl Config {
     /// Create a new Configuraiton.
-    ///
-    /// This function will create new Config.
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    ///
-    /// use carbone_sdk_rust::config::Config;
-    /// use carbone_sdk_rust::errors::CarboneError;
-    /// use carbone_sdk_rust::types::ApiVersion;
-    ///
-    /// fn main() -> Result<(), CarboneError> {
-    ///     let api_version: ApiVersion = ApiVersion::new("4".to_string())?;
-    ///     let config = Config::new(
-    ///        "http://127.0.0.1:57780".to_string(),
-    ///        4,
-    ///        api_version)?;
-    ///     Ok(())
-    /// }
-    /// ```
-    pub fn new(api_url: String, api_timeout: u64, api_version: ApiVersion) -> Result<Self> {
+    pub fn new(api_url: String, api_timeout: u64, api_version: Option<ApiVersion>) -> Result<Self> {
         let config = Self {
             api_url,
             api_timeout,
@@ -55,22 +35,6 @@ impl Config {
     }
 
     /// Load a Configuraiton from a file.
-    ///
-    /// This function will create new Config struct with,
-    /// the values from the file.
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    ///
-    /// use carbone_sdk_rust::config::Config;
-    /// use carbone_sdk_rust::errors::CarboneError;
-    ///
-    /// fn main() -> Result<(), CarboneError> {
-    ///     let config = Config::from_file("tests/config.test.json")?;
-    ///     Ok(())
-    /// }
-    /// ```
     pub fn from_file(path: &str) -> Result<Self> {
         let file_content =
             fs::read_to_string(path).or(Err(CarboneError::FileNotFound(path.to_string())))?;
@@ -81,26 +45,6 @@ impl Config {
 }
 
 /// Load a Default Configuraiton.
-///
-/// This function will create new Config struct the with,
-/// the default values.
-///
-/// # Example
-///
-/// ```no_run
-///
-/// use carbone_sdk_rust::config::Config;
-/// use carbone_sdk_rust::errors::CarboneError;
-///
-/// fn main() -> Result<(), CarboneError> {
-///
-///    let config: Config = Default::default();
-///    
-///     assert_eq!(config.api_url, "https://api.carbone.io".to_string());
-///
-///     Ok(())
-/// }
-/// ```
 impl Default for Config {
     fn default() -> Self {
         Self {

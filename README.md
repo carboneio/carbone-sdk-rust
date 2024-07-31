@@ -49,7 +49,7 @@ async fn main() -> Result<(), CarboneError> {
 
     let config: Config = Default::default();
  
-    let api_token = ApiJsonToken::new(token)?;
+    let api_token = ApiJsonToken::new(token.to_string())?;
 
     let json_data_value = String::from(r#"
         {
@@ -67,7 +67,7 @@ async fn main() -> Result<(), CarboneError> {
 
     let carbone = Carbone::new(&config, &api_token)?;
     
-    let report_content = match carbone.generate_report_with_template_id(template_id.clone(), json_data.clone()).await {
+    let report_content = match carbone.generate_report_with_template_id(template_id, json_data).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -99,7 +99,6 @@ async fn main() -> Result<(), CarboneError> {
     - [Set API Version](#set-api-version)
 - [Build commands](#build-commands)
 - [Test commands](#test-commands)
-- [Project history](#-history)
 - [Contributing](#-contributing)
 
 ### Carbone SDK Constructor
@@ -128,8 +127,20 @@ let token = match env::var("CARBONE_TOKEN") {
              Err(e) => panic!("{}", e.to_string())
             };
 // Define the URL of your Carbone On-premise Server or AWS EC2 URL:
-let config: Config = Config::new("ON_PREMISE_URL".to_string(), "api_time_out_in_sec_in_u64", ApiVersion::new("Version".to_string()).expect("REASON")).expect("REASON");
+let config: Config = Config::new("ON_PREMISE_URL".to_string(), "api_time_out_in_sec_in_u64", ApiVersion::new("4".to_string()).expect("REASON")).expect("REASON");
 let carbone = Carbone::new(&config, &api_token)?;
+```
+
+Constructor to create a new instance of CarboneSDK.
+The access token can be pass as an argument or by the environment variable "CARBONE_TOKEN".
+Get your API key on your Carbone account: https://account.carbone.io/.
+To set a new environment variable, use the command:
+```bash
+$ export CARBONE_TOKEN=your-secret-token
+```
+Check if it is set by running:
+```bash
+$ printenv | grep "CARBONE_TOKEN"
 ```
 
 ### Download Document
@@ -174,7 +185,7 @@ let json_data_value = String::from(r#"
 
 let json_data = JsonData::new(json_data_value)?;
 
-let content = match generate_report(template_name.to_string(), filte_content, json_data, None, None).await {
+let content = match carbone.generate_report(template_name.to_string(), filte_content, json_data, None, None).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -197,7 +208,7 @@ let json_data = String::from(r#"
 
 let json_data = JsonData::new(json_data_value)?;
 
-let content = match generate_report_with_template_id( template_id, filte_content, json_data).await {
+let content = match carbone.generate_report_with_template_id( template_id, filte_content, json_data).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -232,14 +243,14 @@ let template_id = match carbone.upload_template("report", template_data, None).a
 pub async fn delete_template(&self, template_id: TemplateId);
 ```
 
-Delete a template by providing a template ID as `TemplateId`, and it returns whether the request succeeded as a `Boolean`.
+Delete a template by providing a template ID as `template_id`, and it returns whether the request succeeded as a `Boolean`.
 
 **Example**
 
 ```rust
 let template_id = TemplateId::new("template_id".to_string())?;
 
-let boolean = match delete_template(template_id).await {
+let boolean = match carbone.delete_template(template_id).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -247,7 +258,7 @@ let boolean = match delete_template(template_id).await {
 
 ### generate Document only
 
-The generate_report function takes a template ID as `String`, and the JSON data-set as `String`.
+The generate_report function takes a template ID as `String`, and the JSON data-set as `JsonData`.
 It return a `renderId`, you can pass this `renderId` at [get_report](#download-document-only) for download the document.
 
 ```rust
@@ -272,7 +283,7 @@ let json_data = String::from(r#"
 
 let json_data = JsonData::new(json_data_value)?;
 
-let render_id = match render_data(template_id, json_data).await {
+let render_id = match carbone.render_data(template_id, json_data).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -293,7 +304,7 @@ pub async fn get_report(&self, render_id: &RenderId);
 
 let render_id = RenderId::new("render_id".to_string())?;
 
-let content = match get_report(render_id).await {
+let content = match carbone.get_report(&render_id).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -315,11 +326,33 @@ Provide a template ID as `String` and it returns the file as `Bytes`.
 ```rust
 let template_id = TemplateId::new("template_id".to_string())?;
 
-let content = match download_template(template_id).await {
+let content = match carbone.download_template(template_id).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
 ```
+
+### Get API Status
+
+**Definition**
+
+```rust
+
+pub async fn get_status(&self);
+
+```
+
+The function requests the Carbone API to get the current status and version as `String`.
+
+**Example**
+
+```rust
+let status = match carbone.get_status().await {
+        Ok(v) => v,
+        Err(e) => panic!("{}", e.to_string())
+    };
+```
+
 ### Set API 
 
 **Definition**
@@ -345,12 +378,12 @@ At the root of the SDK repository run:
 cargo build
 ```
 
-In another Java project, you can load the local build of the SDK, in the pom.xml:
-```xml
+In another Rust project, you can load the local build of the SDK, in the Cargo.toml:
+```toml
 
 carbone-sdk-rust = {path = "your/local/path"}
 ```
-Finally, compile your Java project with the SDK:
+Finally, compile your Rust project with the SDK:
 ```sh
 cargo run 
 ```
