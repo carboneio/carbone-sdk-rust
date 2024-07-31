@@ -23,7 +23,7 @@ pub struct Config {
 
 impl Config {
     /// Create a new Configuraiton.
-    pub fn new(api_url: String, api_timeout: u64, api_version: Option<ApiVersion>) -> Result<Self> {
+    pub fn new(api_url: String, api_timeout: u64, api_version: ApiVersion) -> Result<Self> {
         let config = Self {
             api_url,
             api_timeout,
