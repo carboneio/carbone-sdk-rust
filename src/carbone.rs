@@ -29,7 +29,7 @@ pub struct Carbone<'a> {
 }
 
 impl<'a> Carbone<'a> {
-    pub fn new(config: &'a Config, api_token: Option<&'a ApiJsonToken>) -> Result<Self> {
+    pub fn new(config: &'a Config, api_token: &'a ApiJsonToken) -> Result<Self> {
         let mut headers = header::HeaderMap::new();
         headers.insert(
             "carbone-version",
