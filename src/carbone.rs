@@ -36,7 +36,7 @@ impl<'a> Carbone<'a> {
             HeaderValue::from_str(config.api_version.as_str()).unwrap(),
         );
 
-        let bearer = format!("Bearer {}", api_token.expect("REASON").as_str());
+        let bearer = format!("Bearer {}", api_token.as_str());
 
         let mut auth_value = header::HeaderValue::from_str(bearer.as_str()).unwrap();
         auth_value.set_sensitive(true);
