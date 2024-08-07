@@ -9,7 +9,6 @@ use reqwest::multipart;
 use reqwest::Client;
 use reqwest::ClientBuilder;
 use reqwest::StatusCode;
-use reqwest::Response;
 
 
 use crate::carbone_response::APIResponse;
@@ -20,7 +19,6 @@ use crate::template::*;
 use crate::types::{ApiJsonToken, JsonData};
 
 use crate::types::Result;
-use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct Carbone<'a> {
@@ -29,24 +27,26 @@ pub struct Carbone<'a> {
 }
 
 impl<'a> Carbone<'a> {
-    pub fn new(config: &'a Config, api_token: &'a ApiJsonToken) -> Result<Self> {
+    pub fn new(config: &'a Config, api_token: Option<&'a ApiJsonToken>) -> Result<Self> {
         let mut headers = header::HeaderMap::new();
         headers.insert(
             "carbone-version",
             HeaderValue::from_str(config.api_version.as_str()).unwrap(),
         );
+        if api_token != None 
+        {
+            let bearer = format!("Bearer {}", api_token.expect("REASON").as_str());
 
-        let bearer = format!("Bearer {}", api_token.as_str());
+            let mut auth_value = header::HeaderValue::from_str(bearer.as_str()).unwrap();
+            auth_value.set_sensitive(true);
 
-        let mut auth_value = header::HeaderValue::from_str(bearer.as_str()).unwrap();
-        auth_value.set_sensitive(true);
+            headers.insert(header::AUTHORIZATION, auth_value);
+        }
 
-        headers.insert(header::AUTHORIZATION, auth_value);
-
-        let http_client = ClientBuilder::new()
-            .default_headers(headers)
-            .timeout(Duration::from_secs(config.api_timeout))
-            .build()?;
+            let http_client = ClientBuilder::new()
+                .default_headers(headers)
+                .timeout(Duration::from_secs(config.api_timeout))
+                .build()?;
 
         Ok(Self {
             config,
@@ -95,7 +95,7 @@ impl<'a> Carbone<'a> {
 
         let template_id_generated = TemplateId::from_bytes(template_data.to_owned(), payload)?;
         let mut template_id = template_id_generated;
-        let mut render_id = None;
+        let render_id;
     
         match self.render_data(template_id, json_data.clone()).await {
             Ok(id) => {

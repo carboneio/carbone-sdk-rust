@@ -42,6 +42,9 @@ use carbone_sdk_rust::template::TemplateId;
  
 use carbone_sdk_rust::errors::CarboneError;
 
+use std::fs::File;
+use std::io::Write
+
 #[tokio::main]
 async fn main() -> Result<(), CarboneError> {
     
@@ -117,18 +120,14 @@ Get your API key on your Carbone account: https://account.carbone.io/.
 // For Carbone Cloud, provide your API Access Token as first argument:
 let token = "Token";
 let config: Config = Default::default();
-let carbone = Carbone::new(&config, &api_token)?;
+let carbone = Carbone::new(&config, Some(&api_token))?;
 ```
 
 Example of a new SDK instance for **Carbone On-premise** or **Carbone On-AWS**:
 ```rust
-let token = match env::var("CARBONE_TOKEN") {
-             Ok(v) => v,
-             Err(e) => panic!("{}", e.to_string())
-            };
 // Define the URL of your Carbone On-premise Server or AWS EC2 URL:
 let config: Config = Config::new("ON_PREMISE_URL".to_string(), "api_time_out_in_sec_in_u64", ApiVersion::new("4".to_string()).expect("REASON")).expect("REASON");
-let carbone = Carbone::new(&config, &api_token)?;
+let carbone = Carbone::new(&config, None)?;
 ```
 
 Constructor to create a new instance of CarboneSDK.
@@ -185,7 +184,7 @@ let json_data_value = String::from(r#"
 
 let json_data = JsonData::new(json_data_value)?;
 
-let content = match carbone.generate_report(template_name.to_string(), filte_content, json_data, None, None).await {
+let content = match carbone.generate_report(file_name.to_string(), file_content, json_data, None, None).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -231,7 +230,7 @@ let template_name = "template.odt".to_string();
 let template_path = format!("src/{}", template_name);
 let template_data = fs::read(template_path.to_owned())?;
 
-let template_id = match carbone.upload_template("report", template_data, None).await {
+let template_id = match carbone.upload_template(template_name, template_data, None).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };
@@ -326,7 +325,7 @@ Provide a template ID as `String` and it returns the file as `Bytes`.
 ```rust
 let template_id = TemplateId::new("template_id".to_string())?;
 
-let content = match carbone.download_template(template_id).await {
+let content = match carbone.download_template(&template_id).await {
         Ok(v) => v,
         Err(e) => panic!("{}", e.to_string())
     };

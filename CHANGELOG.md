@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file. This projec
 - Added error `HttpError`: It return the status code and a error message.
 - Modified for the `generate_report`: Optimization of api calls when there is error 404.
 - Modified for the `render_data`: When there is an error in the request, the function returns the status code and an error message.
+- Modified for the `new`: The value `api_token` is optional.
 - Added units tests.
 
 ### v1.0.0
