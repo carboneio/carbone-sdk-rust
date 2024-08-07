@@ -50,7 +50,7 @@ mod tests {
 
         let api_token = &helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
         let is_deleted = carbone.delete_template(template_id).await.unwrap();
 
         mock_server.assert();
@@ -72,7 +72,7 @@ mod tests {
             "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114".to_string(),
         )?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
         let result = carbone.delete_template(template_id).await;
 
         assert!(result.is_err());
@@ -110,7 +110,7 @@ mod tests {
 
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
         let result = carbone.delete_template(template_id).await;
 
         let expected_error = CarboneError::Error(error_msg);
@@ -146,7 +146,7 @@ mod tests {
 
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let template_content = carbone.download_template(&template_id).await.unwrap();
 
@@ -169,7 +169,7 @@ mod tests {
             "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114".to_string(),
         )?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let result = carbone.download_template(&template_id).await;
 
@@ -208,7 +208,7 @@ mod tests {
 
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let result = carbone.download_template(&template_id).await;
 
@@ -232,7 +232,7 @@ mod tests {
         let config = helper.create_config_for_mock_server(Some(&server))?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let report_data = fs::read_to_string("tests/data/report_data.json")?;
 
@@ -289,7 +289,7 @@ mod tests {
         let config = helper.create_config_for_mock_server(Some(&server))?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let report_data = fs::read_to_string("tests/data/report_data.json")?;
 
@@ -351,7 +351,7 @@ mod tests {
         let config = helper.create_config_for_mock_server(Some(&server))?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let report_data = fs::read_to_string("tests/data/report_data.json")?;
 
@@ -447,7 +447,7 @@ mod tests {
         let config = helper.create_config_for_mock_server(Some(&server))?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let render_id_value =
             "844318fe97904fb0897d4b0a47fbe9bbd1ce5c9624ae694545cbc1877f581d86.pdf";
@@ -477,7 +477,7 @@ mod tests {
         let config = Config::new("http://bad_url".to_string(), 1, api_version)?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let render_id_value =
             "844318fe97904fb0897d4b0a47fbe9bbd1ce5c9624ae694545cbc1877f581d86.pdf";
@@ -500,7 +500,7 @@ mod tests {
         let config = helper.create_config_for_mock_server(Some(&server))?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let render_id_value = "unknown_render_id.pdf";
         let render_id = &RenderId::new(render_id_value.to_string())?;
@@ -556,7 +556,7 @@ mod tests {
 
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let json_data = String::from(
             r#"
@@ -593,7 +593,7 @@ mod tests {
         let config = Config::new("http://bad_url".to_string(), 1, api_version)?;
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let json_data = String::from(
             r#"
@@ -652,7 +652,7 @@ mod tests {
         let file_path = format!("tests/data/{}", file_name);
         let filte_content = fs::read(file_path)?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
         let template_id = carbone
             .upload_template(file_name, filte_content, None)
             .await
@@ -704,7 +704,7 @@ mod tests {
         let file_path = format!("tests/data/{}", file_name);
         let filte_content = fs::read(file_path)?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
         let template_id = carbone
             .upload_template(file_name, filte_content, Some("salt1234"))
             .await
@@ -748,7 +748,7 @@ mod tests {
         let file_path = format!("tests/data/{}", file_name);
         let filte_content = fs::read(file_path)?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
         let result = carbone
             .upload_template(file_name, filte_content, None)
             .await;
@@ -780,7 +780,7 @@ mod tests {
 
         let api_token = helper.create_api_token()?;
 
-        let carbone = Carbone::new(&config, &api_token)?;
+        let carbone = Carbone::new(&config, Some(&api_token))?;
 
         let response = carbone.get_status().await.unwrap();
 
