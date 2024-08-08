@@ -10,6 +10,7 @@ readme = "README.md"
 license = "Apache-2.0"
 keywords = ["document", "automation", "pdf", "docx", "xlsx"]
 categories = ["template-engine", "api-bindings", "filesystem"]
+exclude = ["tests/*"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
