@@ -4,6 +4,8 @@ use crate::errors::CarboneError;
 
 pub type Result<T> = std::result::Result<T, CarboneError>;
 
+// pub type Result<(T,U)> = std::result::Result<(T,U), CarboneError>;
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ApiJsonToken(String);
 
