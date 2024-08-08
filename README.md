@@ -99,7 +99,7 @@ async fn main() -> Result<(), CarboneError> {
     - [Get a Template](#get-template)
     - [Set Carbone URL](#set-carbone-url)
     - [Get API status](#get-api-status)
-    - [Set API Version](#set-api-version)
+    - [Set API Confing](#set-api-version)
 - [Build commands](#build-commands)
 - [Test commands](#test-commands)
 - [Contributing](#-contributing)
@@ -120,6 +120,7 @@ Get your API key on your Carbone account: https://account.carbone.io/.
 // For Carbone Cloud, provide your API Access Token as first argument:
 let token = "Token";
 let config: Config = Default::default();
+let api_token = ApiJsonToken::new(token.to_string())?;
 let carbone = Carbone::new(&config, Some(&api_token))?;
 ```
 
@@ -142,7 +143,7 @@ Check if it is set by running:
 $ printenv | grep "CARBONE_TOKEN"
 ```
 
-### Download Document
+### Generate and Download a Document
 
 ```rust
 pub async fn generate_report( &self, template_name: String, template_data: Vec<u8>, json_data: JsonData, payload: Option<&str>, salt: Option<&str>);
@@ -170,7 +171,7 @@ The render function generates a document using a specified template and data. It
 ```rust
 let file_name = "name_file.extention";
 let file_path = format!("your/path/{}", file_name);
-let filte_content = fs::read(file_path)?;
+let file_content = fs::read(file_path)?;
 
 let json_data_value = String::from(r#"
         {
@@ -214,7 +215,7 @@ let content = match carbone.generate_report_with_template_id( template_id, filte
 ```
 
 
-### upload Document
+### Upload Template
 
 ```rust
 pub async fn upload_template(&self,file_name: &str,file_content: Vec<u8>,salt: Option<&str>);
@@ -236,7 +237,7 @@ let template_id = match carbone.upload_template(template_name, template_data, No
     };
 ```
 
-### delete Document
+### Delete Template
 
 ```rust
 pub async fn delete_template(&self, template_id: TemplateId);
@@ -255,7 +256,7 @@ let boolean = match carbone.delete_template(template_id).await {
     };
 ```
 
-### generate Document only
+### Generate Document only
 
 The generate_report function takes a template ID as `String`, and the JSON data-set as `JsonData`.
 It return a `renderId`, you can pass this `renderId` at [get_report](#download-document-only) for download the document.
@@ -352,7 +353,7 @@ let status = match carbone.get_status().await {
     };
 ```
 
-### Set API 
+### Set API Confing
 
 **Definition**
 
