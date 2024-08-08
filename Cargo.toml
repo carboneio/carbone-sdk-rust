@@ -1,13 +1,15 @@
 [package]
 name = "carbone-sdk-rust"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
-authors = ["Pascal Chenevas-Paule <pcp.dev@posteo.de>"]
-description = "Generate PDF, DOCX, XLSX, ..., HTML reports from templates and JSON data with Carbone API"
+authors = ["Carbone.io <dev@carbone.io>"]
+description = "Generate documents with Carbone, using templates and JSON data-set. Create invoices, reports, certificates, contracts, financial statements, documents like Word files, Excel sheets, CSVs, PowerPoint slides, and more. The template can be a DOCX, PPTX, XLSX, CSV, XML, HTML and many formats."
 homepage = "https://carbone.io"
 repository = "https://github.com/carboneio/carbone-sdk-rust"
 readme = "README.md"
 license = "Apache-2.0"
+keywords = ["document", "automation", "pdf", "docx", "xlsx"]
+categories = ["template-engine", "api-bindings", "filesystem"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
