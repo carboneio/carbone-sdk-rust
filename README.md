@@ -99,7 +99,7 @@ async fn main() -> Result<(), CarboneError> {
     - [Get a Template](#get-template)
     - [Set Carbone URL](#set-carbone-url)
     - [Get API status](#get-api-status)
-    - [Set API Confing](#set-api-version)
+    - [Set API Config](#set-api-version)
 - [Build commands](#build-commands)
 - [Test commands](#test-commands)
 - [Contributing](#-contributing)
@@ -353,7 +353,7 @@ let status = match carbone.get_status().await {
     };
 ```
 
-### Set API Confing
+### Set API Config
 
 **Definition**
 
