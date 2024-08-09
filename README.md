@@ -77,7 +77,7 @@ async fn main() -> Result<(), CarboneError> {
 ### Table of content
 
 - SDK functions:
-    - [CarboneSDK Constructor](#carbone-sdk-constructor)
+    - [SDK Constructor](#sdk-constructor)
     - [Generate and Download a Document](#generate-and-download-document)
     - [Generate a Document Only](#generate-document-only)
     - [Download a Document Only](#download-document-only)
@@ -90,7 +90,7 @@ async fn main() -> Result<(), CarboneError> {
 - [Test commands](#test-commands)
 - [Contributing](#-contributing)
 
-### Carbone SDK Constructor
+### SDK Constructor
 
 **Definition**
 
@@ -115,18 +115,6 @@ Example of a new SDK instance for **Carbone On-premise** or **Carbone On-AWS**:
 // Define the URL of your Carbone On-premise Server or AWS EC2 URL:
 let config: Config = Config::new("ON_PREMISE_URL".to_string(), "api_time_out_in_sec_in_u64", ApiVersion::new("4".to_string()).expect("REASON")).expect("REASON");
 let carbone = Carbone::new(&config, None)?;
-```
-
-Constructor to create a new instance of CarboneSDK.
-The access token can be pass as an argument or by the environment variable "CARBONE_TOKEN".
-Get your API key on your Carbone account: https://account.carbone.io/.
-To set a new environment variable, use the command:
-```bash
-$ export CARBONE_TOKEN=your-secret-token
-```
-Check if it is set by running:
-```bash
-$ printenv | grep "CARBONE_TOKEN"
 ```
 
 ### Generate and Download Document
