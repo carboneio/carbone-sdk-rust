@@ -6,12 +6,7 @@
 
 # Carbone-sdk-rust
 
-Carbone-sdk-rust is a Library that supplies functionalities to communicate with the [Carbone API](https://carbone.io/api-reference.html).
-
-# State of development
-
-This Library is in the early stage of active development and doesn't reach the status of a stable release.
-Therefore it can not be used in a production environment.
+Use the Carbone Rust SDK to communicate with the [Carbone API](https://carbone.io/api-reference.html) to generate documents. 
 
 # Process to render a new report
 
@@ -26,7 +21,10 @@ sequenceDiagram
 
 # Installation
 
-carbone-sdk-rust = "x.x"
+```toml
+[dependencies]
+carbone-sdk-rust = "1.0.0"
+```
 
 # Render a new report
 
@@ -68,7 +66,7 @@ async fn main() -> Result<(), CarboneError> {
 
     let template_id = TemplateId::new("YourTemplateId".to_string())?;
 
-    let carbone = Carbone::new(&config, &api_token)?;
+    let carbone = Carbone::new(&config, Some(&api_token))?;
     
     let report_content = match carbone.generate_report_with_template_id(template_id, json_data).await {
         Ok(v) => v,
@@ -97,9 +95,8 @@ async fn main() -> Result<(), CarboneError> {
     - [Add a Template](#add-template)
     - [Delete a Template](#delete-template)
     - [Get a Template](#get-template)
-    - [Set Carbone URL](#set-carbone-url)
     - [Get API status](#get-api-status)
-    - [Set API Config](#set-api-version)
+    - [Set API Config](#set-api-config)
 - [Build commands](#build-commands)
 - [Test commands](#test-commands)
 - [Contributing](#-contributing)
@@ -143,28 +140,18 @@ Check if it is set by running:
 $ printenv | grep "CARBONE_TOKEN"
 ```
 
-### Generate and Download a Document
+### Generate and Download Document
 
+Generate a document from a local template file:
 ```rust
 pub async fn generate_report( &self, template_name: String, template_data: Vec<u8>, json_data: JsonData, payload: Option<&str>, salt: Option<&str>);
 ```
 
-or
-
-```rust
-pub async fn pub async fn generate_report_with_template_id( &self, template_id: TemplateId, json_data: JsonData);
-```
-
-The render function generates a document using a specified template and data. It takes two parameters:
-* json_data: A stringified JSON containing the data to populate the template.
+Arguments details:
+* template_name: filename of the template.
 * template_data: The content of the file in `Vec<u8>`.
-* template_data: A template ID.
+* json_data: A stringified JSON containing the data to populate the template.
 
-**Function Behavior**
-
-2. Template ID as Second Argument:
-    - If a template ID is provided, the function calls [render_data](#generate-document-only) to generate the report. It then calls [get_report](#download-document-only) to retrieve the generated report.
-    - If the template ID does not exist, an error is returned.
 
 **Example**
 
@@ -192,7 +179,13 @@ let content = match carbone.generate_report(file_name.to_string(), file_content,
 
 ```
 
-or 
+**Or**, Generate a document from a template ID:
+```rust
+pub async fn pub async fn generate_report_with_template_id( &self, template_id: TemplateId, json_data: JsonData);
+```
+Argument details:
+* template_id: Template ID (Manage your templates on [Carbone Studio](https://studio.carbone.io))
+* json_data: A stringified JSON containing the data to populate the template.
 
 ```rust
 let template_id = TemplateId::new("template_id".to_string())?;
@@ -214,8 +207,7 @@ let content = match carbone.generate_report_with_template_id( template_id, filte
     };
 ```
 
-
-### Upload Template
+### Add Template
 
 ```rust
 pub async fn upload_template(&self,file_name: &str,file_content: Vec<u8>,salt: Option<&str>);
@@ -256,7 +248,7 @@ let boolean = match carbone.delete_template(template_id).await {
     };
 ```
 
-### Generate Document only
+### Generate Document Only
 
 The generate_report function takes a template ID as `String`, and the JSON data-set as `JsonData`.
 It return a `renderId`, you can pass this `renderId` at [get_report](#download-document-only) for download the document.
@@ -311,7 +303,7 @@ let content = match carbone.get_report(&render_id).await {
 
 ```
 
-## Get Template
+### Get Template
 
 **Definition**
 
@@ -370,7 +362,10 @@ By default, all requested are made to the Carbone API version `4`.
 
 ```rust
 let config: Config = Config::new("ON_PREMISE_URL".to_string(), "api_time_out_in_sec_in_u64", ApiVersion::new("Version".to_string()).expect("REASON")).expect("REASON");
+
+let carbone = Carbone::new(&config, None)?;
 ```
+
 ## Build commands
 
 At the root of the SDK repository run:
@@ -399,17 +394,15 @@ Execute unit tests with coverage:
 cargo tarpaulin
 ```
 
-# References
+## 👤 History
 
-[Carbone.io](https://carbone.io) a report generator.
+The package was originaly made by [Pascal Chenevas](https://github.com/pascal-chenevas), and open-sourced the code. The Carbone.io team is now maintaining the SDK and will bring all futur evolutions.
 
-[Carbone CLI App](https://github.com/pascal-chenevas/carbone_cli_rs) a simple CLI App to create reports.
+## 🤝 Contributing
 
-## Useful links
+Contributions, issues and feature requests are welcome!
+Feel free to check [issues page](https://github.com/carboneio/carbone-rust-java/issues).
 
-- [How to build a template file](https://carbone.io/documentation.html#building-a-template)
+## Show your support
 
-
-# Contributor
-
-Author: https://github.com/pascal-chenevas
+Give a ⭐️ if this project helped you!
