@@ -8,17 +8,6 @@
 
 Use the Carbone Rust SDK to communicate with the [Carbone API](https://carbone.io/api-reference.html) to generate documents. 
 
-# Process to render a new report
-
-```mermaid
-sequenceDiagram
-    Client->>Carbone API: send a template file to /template
-    Carbone API-->>Client: send a template_id 
-    Client->>Carbone API: send json data to be rendered to /render/{template_id}
-    Carbone API-->>Client: send a render_id
-    Carbone API-->>Client: get the rendered report from /render/{render_id}
-```
-
 # Installation
 
 ```toml
@@ -406,3 +395,14 @@ Feel free to check [issues page](https://github.com/carboneio/carbone-rust-java/
 ## Show your support
 
 Give a ⭐️ if this project helped you!
+
+# Process to render a new report
+
+```mermaid
+sequenceDiagram
+    Client->>Carbone API: send a template file to /template
+    Carbone API-->>Client: send a template_id 
+    Client->>Carbone API: send json data to be rendered to /render/{template_id}
+    Carbone API-->>Client: send a render_id
+    Carbone API-->>Client: get the rendered report from /render/{render_id}
+```
