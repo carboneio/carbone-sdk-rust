@@ -92,14 +92,6 @@ async fn main() -> Result<(), CarboneError> {
 
 ### SDK Constructor
 
-**Definition**
-
-```rust
-let config: Config;
-```
-
-**Example**
-
 Example of a new SDK instance for **Carbone Cloud**:
 Get your API key on your Carbone account: https://account.carbone.io/.
 ```rust
