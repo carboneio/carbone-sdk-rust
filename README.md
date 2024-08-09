@@ -8,16 +8,16 @@
 
 Use the Carbone Rust SDK to communicate with the [Carbone API](https://carbone.io/api-reference.html) to generate documents. 
 
-# Installation
+## Installation
 
 ```toml
 [dependencies]
 carbone-sdk-rust = "1.0.0"
 ```
 
-# Render a new report
+## Quickstart
 
-### Using an existing Template
+Try the following code to render a report in 10 seconds. Just insert your API key, the template ID you want to render, and the JSON data-set as string. Get your API key on your Carbone account: https://account.carbone.io/.
 
 ```rust
 use std::env;
