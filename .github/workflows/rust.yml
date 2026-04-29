@@ -10,21 +10,30 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  format:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Format
+      run: cargo fmt --check
+
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Build
       run: cargo build --verbose
-      
+
   test:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Run tests
       run: cargo test --verbose
 
@@ -33,7 +42,7 @@ jobs:
     env:
       CARGO_TERM_COLOR: always
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Install Rust
         run: rustup update stable
       - name: Install cargo-llvm-cov

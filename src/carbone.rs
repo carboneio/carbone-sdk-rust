@@ -10,7 +10,6 @@ use reqwest::Client;
 use reqwest::ClientBuilder;
 use reqwest::StatusCode;
 
-
 use crate::carbone_response::APIResponse;
 use crate::config::Config;
 use crate::errors::*;
@@ -33,8 +32,7 @@ impl<'a> Carbone<'a> {
             "carbone-version",
             HeaderValue::from_str(config.api_version.as_str()).unwrap(),
         );
-        if api_token != None 
-        {
+        if api_token != None {
             let bearer = format!("Bearer {}", api_token.expect("REASON").as_str());
 
             let mut auth_value = header::HeaderValue::from_str(bearer.as_str()).unwrap();
@@ -43,10 +41,10 @@ impl<'a> Carbone<'a> {
             headers.insert(header::AUTHORIZATION, auth_value);
         }
 
-            let http_client = ClientBuilder::new()
-                .default_headers(headers)
-                .timeout(Duration::from_secs(config.api_timeout))
-                .build()?;
+        let http_client = ClientBuilder::new()
+            .default_headers(headers)
+            .timeout(Duration::from_secs(config.api_timeout))
+            .build()?;
 
         Ok(Self {
             config,
@@ -90,40 +88,46 @@ impl<'a> Carbone<'a> {
         template_data: Vec<u8>,
         json_data: JsonData,
         payload: Option<&str>,
-        salt: Option<&str>
+        salt: Option<&str>,
     ) -> Result<Bytes> {
-
         let template_id_generated = TemplateId::from_bytes(template_data.to_owned(), payload)?;
         let mut template_id = template_id_generated;
         let render_id;
-    
+
         match self.render_data(template_id, json_data.clone()).await {
             Ok(id) => {
                 render_id = Some(id);
             }
             Err(e) => match e {
-                CarboneError::HttpError { status_code, error_message } => {
+                CarboneError::HttpError {
+                    status_code,
+                    error_message,
+                } => {
                     if status_code == reqwest::StatusCode::NOT_FOUND {
-                        template_id = self.upload_template(template_name.as_str(), template_data, salt).await?;
+                        template_id = self
+                            .upload_template(template_name.as_str(), template_data, salt)
+                            .await?;
                         render_id = Some(self.render_data(template_id, json_data).await?);
                     } else {
-                        return Err(CarboneError::HttpError { status_code, error_message });
+                        return Err(CarboneError::HttpError {
+                            status_code,
+                            error_message,
+                        });
                     }
-                },
+                }
                 CarboneError::Error(error_message) => {
                     return Err(CarboneError::Error(error_message));
-                },
+                }
                 _ => {
                     return Err(e);
                 }
-            }
+            },
         };
-    
+
         let report_content = self.get_report(&render_id.unwrap()).await?;
-    
+
         Ok(report_content)
     }
-
 
     /// Get a new report.
     pub async fn get_report(&self, render_id: &RenderId) -> Result<Bytes> {
@@ -224,10 +228,10 @@ impl<'a> Carbone<'a> {
             None => return Err(CarboneError::Error("Failed to fetch file name".to_string())),
         };
 
-
         let ext = file_path
             .extension()
-            .and_then(|ext| ext.to_str()) .unwrap_or("");
+            .and_then(|ext| ext.to_str())
+            .unwrap_or("");
         let mime = mime_guess::from_ext(ext).first_or_octet_stream();
 
         let part = multipart::Part::bytes(file_content)
@@ -237,7 +241,6 @@ impl<'a> Carbone<'a> {
         let form: multipart::Form = multipart::Form::new().text("", salt).part("template", part);
 
         let url = format!("{}/template", self.config.api_url);
-
 
         let response = self.http_client.post(url).multipart(form).send().await?;
 
@@ -250,9 +253,7 @@ impl<'a> Carbone<'a> {
         }
     }
 
-
-    pub async fn get_status(&self) -> Result<String>
-    {
+    pub async fn get_status(&self) -> Result<String> {
         let url = format!("{}/status", self.config.api_url);
 
         let response = self.http_client.get(url).send().await?;

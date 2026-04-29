@@ -341,8 +341,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_generate_report_unupload_template() -> Result<(), CarboneError>
-    {
+    async fn test_generate_report_unupload_template() -> Result<(), CarboneError> {
         // Start a lightweight mock server.
         let server = MockServer::start();
 
@@ -391,16 +390,14 @@ mod tests {
         let mock_render_response_false = server.mock(|when, then| {
             when.method("POST")
                 .path(format!("/render/{}", template_id.as_str()));
-            then.status(404)
-            .json_body(json!({
+            then.status(404).json_body(json!({
                 "success": false,
                 "error": "template no found"
             }));
         });
 
         let mock_upload_template = server.mock(|when, then| {
-            when.method("POST")
-                .path(format!("/template"));
+            when.method("POST").path(format!("/template"));
             then.status(200)
                 .header("content-type", "application/json")
                 .json_body_obj(&body);
@@ -765,13 +762,14 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_status() -> Result<(), CarboneError> {
-        let body : String = "{\"success\":true,\"code\":200,\"message\":\"OK\",\"version\":\"4.22.11\"}".to_string();
+        let body: String =
+            "{\"success\":true,\"code\":200,\"message\":\"OK\",\"version\":\"4.22.11\"}"
+                .to_string();
         let server = MockServer::start();
 
         // Create a mock on the server.
         let mock_server = server.mock(|when, then| {
-            when.method("GET")
-                .path(format!("/status"));
+            when.method("GET").path(format!("/status"));
             then.status(200).body(body.clone());
         });
 
